@@ -1,13 +1,12 @@
 package com.example.fluuterspring.controller;
 
 import com.example.fluuterspring.entities.Bus;
+import com.example.fluuterspring.models.ResponseModel;
 import com.example.fluuterspring.servies.BusService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,14 +18,13 @@ public class BusController {
     private BusService busService;
 
     @PostMapping("/add")
-    public Bus add(@RequestBody Bus bus){
-        busService.addBus(bus);
-
-        return bus;
+    public ResponseModel<Bus> addBus(@RequestBody Bus bus){
+        final Bus savedBus = busService.addBus(bus);
+        return new ResponseModel<>(HttpStatus.OK.value(), "Bus saved", savedBus);
     }
 
     @GetMapping("/all")
-    public List<Bus> getAllBus(){
-        return busService.getAllBus();
+    public ResponseEntity<List<Bus>> getAllBus(){
+        return ResponseEntity.ok(busService.getAllBus());
     }
 }
