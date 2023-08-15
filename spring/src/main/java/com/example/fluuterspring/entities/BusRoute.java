@@ -10,7 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "bus_route")
+@Entity
+@Table(name = "bus_route")
 public class BusRoute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
