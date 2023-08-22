@@ -10,9 +10,11 @@ import com.example.fluuterspring.repos.ReservationRepository;
 import com.example.fluuterspring.servies.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ReservationServiceImpl implements ReservationService {
     @Autowired
     private ReservationRepository reservationRepository;
@@ -25,7 +27,7 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation addReservation(Reservation reservation) {
         final Customer customer;
         final boolean doesCustomerExist = customerRepository
-                .existsByMobileorEmail(reservation.getCustomer().getMobile(), reservation.getCustomer().getEmail());
+                .existsByMobileOrEmail(reservation.getCustomer().getMobile(), reservation.getCustomer().getEmail());
         if(doesCustomerExist){
             customer = customerRepository
                     .findByMobileOrEmail(reservation.getCustomer().getMobile(), reservation.getCustomer().getEmail()).orElseThrow();
