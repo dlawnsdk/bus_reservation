@@ -1,6 +1,6 @@
 package com.example.fluuterspring.security;
 
-import com.example.fluuterspring.servies.CustomUserDetailsService;
+import com.example.fluuterspring.services.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,33 +22,31 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
-
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromRequest(request);
-        if(StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)){
+        if(StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
             String userName = jwtTokenProvider.getUserName(token);
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(userName);
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(
-                      userDetails,
-                      null,
-                      userDetails.getAuthorities()
+                          userDetails,
+                          null,
+                          userDetails.getAuthorities()
                     );
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
-
+        filterChain.doFilter(request, response);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if(StringUtils.hasText(bearerToken) &&  bearerToken.startsWith("Bearer ")){
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
-
         }
         return null;
     }

@@ -29,8 +29,7 @@ public class AuthController {
     private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseModel> login(@RequestBody AppUsers user){
-        System.out.println("로그인 시도");
+    public ResponseEntity<AuthResponseModel> login(@RequestBody AppUsers user) {
         final AuthResponseModel authResponseModel;
         final Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -45,7 +44,6 @@ public class AuthController {
                 System.currentTimeMillis(),
                 expiration
         );
-
         return ResponseEntity.ok(authResponseModel);
     }
 }

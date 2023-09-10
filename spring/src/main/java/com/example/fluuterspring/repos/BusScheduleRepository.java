@@ -10,5 +10,6 @@ import java.util.Optional;
 
 public interface BusScheduleRepository extends JpaRepository<BusSchedule, Long> {
     Optional<List<BusSchedule>> findByBusRoute(BusRoute busRoute);
+
     Boolean existsByBusAndBusRouteAndDepartureTime(Bus bus, BusRoute busRoute, String date);
 }

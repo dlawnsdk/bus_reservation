@@ -19,5 +19,5 @@ public class BusRoute {
     private String routeName;
     private String cityFrom;
     private String cityTo;
-    private double distanceInkm;
+    private Double distanceInKm;
 }

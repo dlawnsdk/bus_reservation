@@ -1,4 +1,4 @@
-package com.example.fluuterspring.servies;
+package com.example.fluuterspring.services;
 
 import com.example.fluuterspring.entities.BusSchedule;
 

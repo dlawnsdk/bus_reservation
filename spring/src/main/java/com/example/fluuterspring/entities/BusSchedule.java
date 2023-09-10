@@ -23,7 +23,7 @@ public class BusSchedule {
     @JoinColumn(name = "bus_route_id")
     private BusRoute busRoute;
     private String departureTime;
-    private int ticketPrice;
-    private int discount;
-    private int processingFee;
+    private Integer ticketPrice;
+    private Integer discount;
+    private Integer processingFee;
 }

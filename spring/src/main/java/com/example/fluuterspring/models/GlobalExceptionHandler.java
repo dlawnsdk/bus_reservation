@@ -10,31 +10,29 @@ import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(ReservationException.class)
+    @ExceptionHandler(ReservationApiException.class)
     public ResponseEntity<ErrorDetails> handleReservationApiException(
-            ReservationException exception,
+            ReservationApiException exception,
             WebRequest request
-    )     {
+    ) {
         final ErrorDetails errorDetails = new ErrorDetails();
         errorDetails.setErrorCode(exception.getStatus().value());
         errorDetails.setErrorMessage(exception.getLocalizedMessage());
         errorDetails.setDevErrorMessage(request.getDescription(false));
         errorDetails.setTimestamp(System.currentTimeMillis());
-
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorDetails> handleAccessException(
+    public ResponseEntity<ErrorDetails> handleAccessDeniedException(
             AccessDeniedException exception,
             WebRequest request
-    )     {
+    ) {
         final ErrorDetails errorDetails = new ErrorDetails();
+
         errorDetails.setErrorMessage(exception.getLocalizedMessage());
         errorDetails.setDevErrorMessage(request.getDescription(false));
         errorDetails.setTimestamp(System.currentTimeMillis());
-
         return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
 
@@ -42,12 +40,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> handleGlobalException(
             Exception exception,
             WebRequest request
-    )     {
+    ) {
         final ErrorDetails errorDetails = new ErrorDetails();
         errorDetails.setErrorMessage(exception.getLocalizedMessage());
         errorDetails.setDevErrorMessage(request.getDescription(false));
         errorDetails.setTimestamp(System.currentTimeMillis());
-
         return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
+
 }

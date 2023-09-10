@@ -1,13 +1,13 @@
-package com.example.fluuterspring.servies.impl;
+package com.example.fluuterspring.services.impl;
 
 import com.example.fluuterspring.entities.BusSchedule;
 import com.example.fluuterspring.entities.Customer;
 import com.example.fluuterspring.entities.Reservation;
-import com.example.fluuterspring.models.ReservationException;
+import com.example.fluuterspring.models.ReservationApiException;
 import com.example.fluuterspring.repos.BusScheduleRepository;
 import com.example.fluuterspring.repos.CustomerRepository;
 import com.example.fluuterspring.repos.ReservationRepository;
-import com.example.fluuterspring.servies.ReservationService;
+import com.example.fluuterspring.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,16 +22,16 @@ public class ReservationServiceImpl implements ReservationService {
     private CustomerRepository customerRepository;
     @Autowired
     private BusScheduleRepository busScheduleRepository;
-
     @Override
     public Reservation addReservation(Reservation reservation) {
         final Customer customer;
         final boolean doesCustomerExist = customerRepository
                 .existsByMobileOrEmail(reservation.getCustomer().getMobile(), reservation.getCustomer().getEmail());
-        if(doesCustomerExist){
+        if(doesCustomerExist) {
             customer = customerRepository
                     .findByMobileOrEmail(reservation.getCustomer().getMobile(), reservation.getCustomer().getEmail()).orElseThrow();
-        }else {
+
+        } else {
             customer = customerRepository.save(reservation.getCustomer());
         }
         reservation.setCustomer(customer);
@@ -47,17 +47,17 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> getReservationsByScheduleAndDepartureDate(Long scheduleId, String departureDate) {
         final BusSchedule schedule = busScheduleRepository
                 .findById(scheduleId)
-                .orElseThrow(() -> new ReservationException(HttpStatus.BAD_REQUEST, "Schedule not found"));
+                .orElseThrow(() -> new ReservationApiException(HttpStatus.BAD_REQUEST, "Schedule not found"));
         return reservationRepository
                 .findByBusScheduleAndDepartureDate(schedule, departureDate)
-                .orElseThrow(() -> new ReservationException(HttpStatus.BAD_REQUEST, "Reservation not found"));
+                .orElseThrow(() -> new ReservationApiException(HttpStatus.BAD_REQUEST, "Reservation not found"));
     }
 
     @Override
     public List<Reservation> getReservationsByMobile(String mobile) {
         final Customer customer = customerRepository
                 .findByMobile(mobile)
-                .orElseThrow(() -> new ReservationException(HttpStatus.BAD_REQUEST, "No record found"));
-        return reservationRepository.findByCustomer(customer).orElseThrow(() -> new ReservationException(HttpStatus.BAD_REQUEST, "No record found"));
+                .orElseThrow(() -> new ReservationApiException(HttpStatus.BAD_REQUEST, "No record found"));
+        return reservationRepository.findByCustomer(customer).orElseThrow(() -> new ReservationApiException(HttpStatus.BAD_REQUEST, "No record found"));
     }
 }

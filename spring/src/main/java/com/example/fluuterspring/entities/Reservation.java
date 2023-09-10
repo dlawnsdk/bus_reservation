@@ -18,14 +18,14 @@ public class Reservation {
     private Long reservationId;
     @OneToOne
     @JoinColumn(name = "customer_id")
-    private  Customer customer;
+    private Customer customer;
     @OneToOne
     @JoinColumn(name = "bus_schedule_id")
     private BusSchedule busSchedule;
     private Long timestamp;
     private String departureDate;
-    private int totalSeatBooked;
+    private Integer totalSeatBooked;
     private String seatNumbers;
     private String reservationStatus;
-    private int totalPrice;
+    private Integer totalPrice;
 }

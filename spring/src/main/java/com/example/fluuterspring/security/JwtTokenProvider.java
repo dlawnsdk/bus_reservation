@@ -1,6 +1,6 @@
 package com.example.fluuterspring.security;
 
-import com.example.fluuterspring.models.ReservationException;
+import com.example.fluuterspring.models.ReservationApiException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -16,14 +16,12 @@ import java.util.Date;
 public class JwtTokenProvider {
     @Value("${app.jwt-secret}")
     private String jwtSecretKey;
-
     @Value("${app-jwt-expiration-milliseconds}")
     private Long expiration;
 
     public String generateToken(Authentication authentication) {
         String userName = authentication.getName();
         Date expireDate = new Date(new Date().getTime() + expiration);
-
         return Jwts.builder()
                 .setSubject(userName)
                 .setIssuedAt(new Date())
@@ -42,20 +40,20 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
-        try{
+        try {
             Jwts.parserBuilder()
                     .setSigningKey(key())
                     .build()
                     .parse(token);
             return true;
-        } catch(MalformedJwtException e){
-            throw new ReservationException(HttpStatus.BAD_REQUEST, "Invalid Token");
-        } catch(ExpiredJwtException e){
-            throw new ReservationException(HttpStatus.BAD_REQUEST, "Token Expired");
-        } catch(UnsupportedJwtException e){
-            throw new ReservationException(HttpStatus.BAD_REQUEST, "Unsupported token");
-        } catch(IllegalArgumentException e){
-            throw new ReservationException(HttpStatus.BAD_REQUEST, "Invalid argument");
+        } catch (MalformedJwtException e) {
+            throw new ReservationApiException(HttpStatus.BAD_REQUEST, "Invalid Token");
+        } catch (ExpiredJwtException e) {
+            throw new ReservationApiException(HttpStatus.BAD_REQUEST, "Token Expired");
+        } catch (UnsupportedJwtException e) {
+            throw new ReservationApiException(HttpStatus.BAD_REQUEST, "Unsupported token");
+        } catch (IllegalArgumentException e) {
+            throw new ReservationApiException(HttpStatus.BAD_REQUEST, "Invalid argument");
         }
     }
 

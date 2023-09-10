@@ -2,7 +2,7 @@ package com.example.fluuterspring.controller;
 
 import com.example.fluuterspring.entities.BusSchedule;
 import com.example.fluuterspring.models.ResponseModel;
-import com.example.fluuterspring.servies.BusScheduleService;
+import com.example.fluuterspring.services.BusScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +17,18 @@ public class BusScheduleController {
     private BusScheduleService busScheduleService;
 
     @PostMapping("/add")
-    public ResponseModel<BusSchedule> addBusSchedule(@RequestBody BusSchedule busSchedule){
+    public ResponseModel<BusSchedule> addBusSchedule(@RequestBody BusSchedule busSchedule) {
         final BusSchedule schedule = busScheduleService.addSchedule(busSchedule);
         return new ResponseModel<>(HttpStatus.OK.value(), "Schedule Saved", schedule);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<BusSchedule>> getAllSchedule() {
+    public ResponseEntity<List<BusSchedule>> getAllSchedules() {
         return ResponseEntity.ok(busScheduleService.getAllBusSchedules());
     }
 
     @GetMapping("/{routeName}")
-    public ResponseEntity<List<BusSchedule>> getBusScheduleByRouteName(@PathVariable(name = "routeName") String routeName){
+    public ResponseEntity<List<BusSchedule>> getBusScheduleByRouteName(@PathVariable(name = "routeName") String routeName) {
         return ResponseEntity.ok(busScheduleService.getSchedulesByRoute(routeName));
     }
 }

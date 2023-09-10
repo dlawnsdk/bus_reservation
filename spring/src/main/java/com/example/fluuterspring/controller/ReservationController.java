@@ -2,7 +2,7 @@ package com.example.fluuterspring.controller;
 
 import com.example.fluuterspring.entities.Reservation;
 import com.example.fluuterspring.models.ResponseModel;
-import com.example.fluuterspring.servies.ReservationService;
+import com.example.fluuterspring.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +17,9 @@ public class ReservationController {
     private ReservationService reservationService;
 
     @PostMapping("/add")
-    public ResponseModel<Reservation> addReservation(@RequestBody Reservation reservation){
+    public ResponseModel<Reservation> addReservation(@RequestBody Reservation reservation) {
         final Reservation res = reservationService.addReservation(reservation);
-        return new ResponseModel<>(HttpStatus.OK.value(), "Reservation Saved", res);
+        return new ResponseModel<>(HttpStatus.OK.value(), "Reservation saved", res);
     }
 
     @GetMapping("/all")
@@ -31,14 +31,14 @@ public class ReservationController {
     public ResponseEntity<List<Reservation>> getReservationsByScheduleAndDepartureDate(
             @RequestParam Long scheduleId,
             @RequestParam String departureDate
-    ){
+    ) {
         return ResponseEntity.ok(reservationService.getReservationsByScheduleAndDepartureDate(scheduleId, departureDate));
     }
 
     @GetMapping("/all/{mobile}")
     public ResponseEntity<List<Reservation>> getReservationsByMobile(
             @PathVariable(name = "mobile") String mobile
-    ){
+    ) {
         return ResponseEntity.ok(reservationService.getReservationsByMobile(mobile));
     }
 }

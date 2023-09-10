@@ -1,8 +1,8 @@
-package com.example.fluuterspring.servies.impl;
+package com.example.fluuterspring.services.impl;
 
 import com.example.fluuterspring.entities.Bus;
 import com.example.fluuterspring.repos.BusRepository;
-import com.example.fluuterspring.servies.BusService;
+import com.example.fluuterspring.services.BusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -17,7 +17,8 @@ public class Bus {
     private Long busId;
     private String busName;
     private String busType;
-    private int totalSeat;
+    private Integer totalSeat;
     @Column(unique = true)
     private String busNumber;
+
 }
